@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Dashboard</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5; 
+      padding: 30px;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h2 {
+      color: #2c3e50;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 2.2em;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 30px;
+      font-size: 1.1em;
+      background-color: #ffffff;
+      padding: 20px 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .filter-bar label {
+      font-weight: 600;
+      color: #34495e;
+    }
+
+    .filter-bar select {
+      padding: 10px 15px;
+      font-size: 1em;
+      border: 1px solid #c0d3eb;
+      border-radius: 8px;
+      background-color: #f9fcff;
+      color: #333;
+      transition: all 0.3s ease;
+      min-width: 
+    }
+
+    .filter-bar select:focus {
+      border-color: #3498db;
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+      outline: none;
+    }
+
+    .filter-bar button {
+      padding: 10px 20px;
+      background-color: grey; 
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1em;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+    }
+
+    .filter-bar button:hover {
+      background-color: #2980b9; 
+      transform: translateY(-2px); 
+    }
+
+    table {
+      width: 100%;
+      max-width: 1300px; 
+      border-collapse: separate;
+      border-spacing: 0; 
+      background-color: white;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      border-radius: 12px; 
+      overflow: hidden; 
+    }
+
+    th, td {
+      border-bottom: 1px solid #e0e6ed;
+      padding: 15px 20px;
+      text-align: left; 
+      vertical-align: middle;
+    }
+
+    th {
+      background-color: #5d6d7e;
+      color: white;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.95em;
+      letter-spacing: 0.2px;
+      position: sticky; 
+      top: 0;
+      z-index: 1;
+    }
+
+    
+    th:first-child {
+        border-top-left-radius: 12px;
+    }
+
+    th:last-child {
+        border-top-right-radius: 12px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f8fbfd; 
+    }
+
+    tr:hover {
+      background-color: #e6f7ff; 
+      transition: background-color 0.2s ease;
+    }
+
+    td {
+      color: #333;
+    }
+
+    td:nth-child(7) {
+      font-weight: bold;
+      color: #27ae60; 
+    }
+
+    td:nth-child(7):contains("No") {
+      color: #e74c3c; 
+    }
+
+    .no-data {
+      text-align: center;
+      padding: 30px;
+      color: #e74c3c;
+      font-weight: 500;
+      font-size: 1.1em;
+      background-color: #fff;
+      border-radius: 12px;
+      margin-top: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+  </style>
+</head>
+<body>
+  <h2>Product Inventory</h2>
+
+  <div class="filter-bar">
+    <label for="categoryFilter">Category:</label>
+    <select id="categoryFilter">
+      <option value="All">All</option>
+    </select>
+
+    <label for="stockFilter">Stock:</label>
+    <select id="stockFilter">
+      <option value="All">All</option>
+      <option value="true">In Stock</option>
+      <option value="false">Out of Stock</option>
+    </select>
+
+    <button onclick="applyFilters()">Filter Products</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Product ID</th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Subcategory</th>
+        <th>Brand</th>
+        <th>Price</th>
+        <th>In Stock</th>
+        <th>Stock Quantity</th>
+        <th>Shipping Info</th>
+        <th>Manufacture Date</th>
+      </tr>
+    </thead>
+    <tbody id="productBody">
+      </tbody>
+  </table>
+
+  <script>
+    let originalData = [];
+
+    fetch("product.json")
+      .then(res => res.json())
+      .then(data => {
+        originalData = data;
+        populateCategoryOptions(data);
+        renderTable(data);
+      })
+      .catch(error => {
+        console.error("Failed to fetch product data:", error);
+        document.getElementById("productBody").innerHTML =
+          `<tr><td colspan="10" class="no-data">Failed to load data. Please check product.json.</td></tr>`;
+      });
+
+    function populateCategoryOptions(data) {
+      const categories = [...new Set(data.map(item => item.category))];
+      const select = document.getElementById("categoryFilter");
+      categories.forEach(cat => {
+        const opt = document.createElement("option");
+        opt.value = cat;
+        opt.textContent = cat;
+        select.appendChild(opt);
+      });
+    }
+
+    function renderTable(data) {
+      const tbody = document.getElementById("productBody");
+      tbody.innerHTML = "";
+
+      if (data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="10" class="no-data">No matching records found based on your filters.</td></tr>`;
+        return;
+      }
+
+      data.forEach(prod => {
+        const s = prod.shippingInfo;
+        const d = s.dimensionsCm;
+        const shipText = `Weight: ${s.weightKg}kg, Size: ${d.length}x${d.width}x${d.height}cm, ETA: ${s.estimatedDeliveryDays} days`;
+
+        const row = `
+          <tr>
+            <td>${prod.productId}</td>
+            <td>${prod.name}</td>
+            <td>${prod.category}</td>
+            <td>${prod.subCategory}</td>
+            <td>${prod.brand}</td>
+            <td>$${prod.price.toFixed(2)}</td>
+            <td>${prod.inStock ? "Yes" : "No"}</td>
+            <td>${prod.stockQuantity}</td>
+            <td>${shipText}</td>
+            <td>${prod.manufactureDate}</td>
+          </tr>
+        `;
+        tbody.innerHTML += row;
+      });
+    }
+
+    function applyFilters() {
+      const cat = document.getElementById("categoryFilter").value;
+      const stock = document.getElementById("stockFilter").value;
+
+      let filtered = originalData;
+
+      if (cat !== "All") {
+        filtered = filtered.filter(p => p.category === cat);
+      }
+
+      if (stock !== "All") {
+        filtered = filtered.filter(p => String(p.inStock) === stock);
+      }
+
+      renderTable(filtered);
+    }
+  </script>
+</body>
+</html>
