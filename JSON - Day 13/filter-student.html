@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Details</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: bisque;
+      padding: 30px;
+      margin: 0;
+    }
+
+    h2 {
+      color: grey;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .filter-bar {
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 16px;
+    }
+
+    .filter-bar label {
+      font-weight: bold;
+    }
+
+    .filter-bar select {
+      padding: 5px 10px;
+      border: 1px solid #888;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .filter-bar button {
+      padding: 6px 12px;
+      background-color: #007acc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .filter-bar button:hover {
+      background-color: #005f99;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #fff;
+      box-shadow: 0px 0px 10px rgba(102, 51, 153, 0.3);
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+      font-size: 15px;
+    }
+
+    th {
+      background-color: #007acc;
+      color: white;
+      font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    .highlight {
+      background-color: cornsilk !important;
+      font-weight: bold;
+    }
+
+    td strong {
+      color: #007acc;
+    }
+  </style>
+</head>
+<body>
+  <h2>Green Valley High School - Student Records</h2>
+
+  <div class="filter-bar">
+    <label for="subjectSelect">Subject Select:</label>
+    <select id="subjectSelect">
+      <option value="Maths">Maths</option>
+      <option value="Science">Science</option>
+      <option value="English">English</option>
+    </select>
+    <button onclick="applySubjectFilter()">Filter > 90 Marks</button>
+  </div>
+
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Id</th>
+        <th>Grade</th>
+        <th>Section</th>
+        <th>Maths</th>
+        <th>Science</th>
+        <th>English</th>
+        <th>Average</th>
+      </tr>
+    </thead>
+    <tbody id="student-table-body">
+      <!-- Dynamic Rows go here -->
+    </tbody>
+  </table>
+
+  <script>
+    let studentData = [];
+
+    fetch('students.json')
+      .then(res => res.json())
+      .then(data => {
+        const tbody = document.getElementById('student-table-body');
+
+        // Calculate average
+        studentData = data.students.map(student => {
+          const total = student.subjects.reduce((sum, sub) => sum + sub.marks, 0);
+          const avg = total / student.subjects.length;
+          return { ...student, average: avg.toFixed(2) };
+        });
+
+        // Sort by average
+        studentData.sort((a, b) => b.average - a.average);
+
+        renderTable(studentData);
+      })
+      .catch(error => {
+        document.getElementById('student-table-body').innerHTML =
+          "<tr><td colspan='8'>Failed to load student data</td></tr>";
+        console.error("Failed to load student data:", error);
+      });
+
+    function renderTable(data) {
+      const tbody = document.getElementById('student-table-body');
+      tbody.innerHTML = "";
+
+      if (data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8">No data available</td></tr>`;
+        return;
+      }
+
+      data.forEach((student, index) => {
+        const marks = {
+          Math: student.subjects.find(sub => sub.name === "Maths")?.marks || 0,
+          Science: student.subjects.find(sub => sub.name === "Science")?.marks || 0,
+          English: student.subjects.find(sub => sub.name === "English")?.marks || 0,
+        };
+
+        const row = `
+          <tr class="${index === 0 ? 'highlight' : ''}">
+            <td>${student.name}</td>
+            <td>${student.id}</td>
+            <td>${student.grade}</td>
+            <td>${student.section}</td>
+            <td>${marks.Math}</td>
+            <td>${marks.Science}</td>
+            <td>${marks.English}</td>
+            <td><strong>${student.average}</strong></td>
+          </tr>
+        `;
+        tbody.innerHTML += row;
+      });
+    }
+
+    function applySubjectFilter() {
+      const selectedSubject = document.getElementById('subjectSelect').value;
+      const filtered = studentData.filter(student =>
+        student.subjects.some(sub => sub.name === selectedSubject && sub.marks > 90)
+      );
+      renderTable(filtered);
+    }
+  </script>
+</body>
+</html>

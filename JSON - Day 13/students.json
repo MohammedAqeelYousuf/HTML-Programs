@@ -33,6 +33,27 @@
                 {"name":"Science","marks":95},
                 {"name":"English","marks":98}
             ]
+        },
+        {
+            "id":"104",
+            "name":"Anjali K",
+            "grade":"10",
+            "section":"A",
+            "subjects":[
+                {"name":"Science","marks":99},
+                {"name":"English","marks":85}
+            ]
+        },
+        {
+            "id":"105",
+            "name":"Rajesh Shankar",
+            "grade":"10",
+            "section":"B",
+            "subjects":[
+                {"name":"Maths","marks":86},
+                {"name":"Science","marks":91}
+            ]
         }
+
     ]
 }
