@@ -1,0 +1,80 @@
+{
+"universityName": "National Institute of Technology",
+"establishedYear": 1985,
+"isAccredited": true,
+"campus": {
+"address": "456 Knowledge Avenue",
+"city": "TechCity",
+"state": "TX",
+"zipCode": "73301"
+},
+"departments": [
+{
+"name": "Computer Science",
+"budget": 3000000,
+"faculty": [
+{
+"id": "CS001",
+"firstName": "John",
+"lastName": "Doe",
+"expertise": ["Algorithms", "AI", "Data Structures"],
+"courses": [
+{"title": "Intro to AI", "status": "Ongoing"},
+{"title": "Data Structures", "status": "Completed"}
+]
+},
+{
+"id": "CS002",
+"firstName": "Jane",
+"lastName": "Williams",
+"expertise": ["Machine Learning", "Python"],
+"courses": [
+{"title": "Machine Learning", "status": "Ongoing"}
+]
+}
+]
+},
+{
+"name": "Mechanical Engineering",
+"budget": 2500000,
+"faculty": [
+{
+"id": "ME001",
+"firstName": "Robert",
+"lastName": "Brown",
+"expertise": ["Thermodynamics", "CAD"],
+"courses": ["Heat Transfer", "CAD Design"]
+}
+]
+},
+{
+"name": "Humanities",
+"budget": 1000000,
+"faculty": [
+{
+"id": "HU001",
+"firstName": "Emily",
+"lastName": "Davis",
+"expertise": ["English Literature", "Creative Writing"]
+}
+]
+}
+],
+"programs": [
+{
+"id": "PROG001",
+"name": "Bachelor of Technology",
+"batches": [
+{"batchYear": 2020, "graduates": 350},
+{"batchYear": 2023, "graduates": 400}
+]
+},
+{
+"id": "PROG002",
+"name": "Master of Science",
+"batches": [
+{"batchYear": 2021, "graduates": 120}
+]
+}
+]
+}

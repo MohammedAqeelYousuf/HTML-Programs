@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Products</title>
+</head>
+<body>
+    <h2>JSON Products</h2>
+    <div id="output"></div>
+
+    <script>
+        fetch('product.json')
+        .then(response => response.json())
+        .then(data => {
+            const output = data.products.map(product => 
+                `<p>Name: ${product.name}, Price: ${product.Price}</p>`
+            ).join("");
+            document.getElementById('output').innerHTML = output;
+        })
+    </script>
+</body>
+</html>

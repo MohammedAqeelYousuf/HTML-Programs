@@ -1,0 +1,36 @@
+{
+    "organization":"CodeNet Academy",
+    "location":"Chennai",
+    "user":[
+        {
+            "username":"alice123",
+            "fullname":"Alice Johnson",
+            "role":"Frontend Developer",
+            "location":"Banglore"
+        },
+        {
+            "username":"bobM",
+            "fullname":"Bob Martin",
+            "role":"Backend Developer",
+            "location":"Hyderabad"
+        },
+        {
+            "username":"CharlieP",
+            "fullname":"Charlie Parker",
+            "role":"Data Scientist",
+            "location":"Delhi"
+        },
+        {
+            "username":"dianaK",
+            "fullname":"Diana Krish",
+            "role":"UI/UX Designer",
+            "location":"Mumbai"
+        },
+        {
+            "username":"ethanV",
+            "fullname":"Ethan Varun",
+            "role":"Devops Engineer",
+            "location":"Pune"
+        }
+    ]
+}

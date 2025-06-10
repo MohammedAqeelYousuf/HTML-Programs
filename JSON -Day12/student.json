@@ -1,0 +1,14 @@
+{
+  "students": [
+    { "Roll No": "S101", "Name": "Ravi", "Math Marks": 85, "Science Marks": 92, "Grade": "A", "Passed": "Yes" },
+    { "Roll No": "S102", "Name": "Neha", "Math Marks": 70, "Science Marks": 65, "Grade": "B", "Passed": "Yes" },
+    { "Roll No": "S103", "Name": "Amit", "Math Marks": 90, "Science Marks": 85, "Grade": "A", "Passed": "Yes" },
+    { "Roll No": "S104", "Name": "Sara", "Math Marks": 76, "Science Marks": 79, "Grade": "B", "Passed": "Yes" },
+    { "Roll No": "S105", "Name": "John", "Math Marks": 88, "Science Marks": 90, "Grade": "A", "Passed": "Yes" },
+    { "Roll No": "S106", "Name": "Priya", "Math Marks": 92, "Science Marks": 95, "Grade": "A+", "Passed": "Yes" },
+    { "Roll No": "S107", "Name": "Karan", "Math Marks": 65, "Science Marks": 60, "Grade": "C", "Passed": "No" },
+    { "Roll No": "S108", "Name": "Lina", "Math Marks": 80, "Science Marks": 82, "Grade": "B", "Passed": "Yes" },
+    { "Roll No": "S109", "Name": "Mehul", "Math Marks": 73, "Science Marks": 76, "Grade": "B", "Passed": "Yes" },
+    { "Roll No": "S1010", "Name": "Divya", "Math Marks": 87, "Science Marks": 89, "Grade": "A", "Passed": "Yes" }
+  ]
+}

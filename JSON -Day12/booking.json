@@ -1,0 +1,14 @@
+{
+  "bookings": [
+    { "Booking ID": "B001", "Guest Names": "John, Emma", "Room Type": "Deluxe", "Check-In": "2025-06-10", "Check-Out": "2025-06-12", "Status": "Confirmed", "Amenities": "WiFi, Breakfast, Pool Access" },
+    { "Booking ID": "B002", "Guest Names": "Anjali", "Room Type": "Suite", "Check-In": "2025-06-11", "Check-Out": "2025-06-13", "Status": "Pending", "Amenities": "WiFi, Gym Access" },
+    { "Booking ID": "B003", "Guest Names": "Michael, Sara, David", "Room Type": "Suite", "Check-In": "2025-06-09", "Check-Out": "2025-06-13", "Status": "Confirmed", "Amenities": "Breakfast" },
+    { "Booking ID": "B004", "Guest Names": "Priya", "Room Type": "Deluxe", "Check-In": "2025-06-10", "Check-Out": "2025-06-15", "Status": "Cancelled", "Amenities": "WiFi, Breakfast, Parking" },
+    { "Booking ID": "B005", "Guest Names": "David, Alex", "Room Type": "Suite", "Check-In": "2025-06-10", "Check-Out": "2025-06-14", "Status": "Confirmed", "Amenities": "WiFi, Pool Access" },
+    { "Booking ID": "B006", "Guest Names": "Natasha", "Room Type": "Standard", "Check-In": "2025-06-13", "Check-Out": "2025-06-16", "Status": "Pending", "Amenities": "Breakfast" },
+    { "Booking ID": "B007", "Guest Names": "Raj, Anita", "Room Type": "Deluxe", "Check-In": "2025-06-10", "Check-Out": "2025-06-12", "Status": "Confirmed", "Amenities": "WiFi, Gym Access, Parking" },
+    { "Booking ID": "B008", "Guest Names": "John", "Room Type": "Suite", "Check-In": "2025-06-12", "Check-Out": "2025-06-17", "Status": "Confirmed", "Amenities": "WiFi, Breakfast" },
+    { "Booking ID": "B009", "Guest Names": "Emma", "Room Type": "Standard", "Check-In": "2025-06-10", "Check-Out": "2025-06-11", "Status": "Cancelled", "Amenities": "Parking" },
+    { "Booking ID": "B010", "Guest Names": "Anjali, Michael", "Room Type": "Deluxe", "Check-In": "2025-06-15", "Check-Out": "2025-06-18", "Status": "Pending", "Amenities": "WiFi, Pool Access, Breakfast" }
+  ]
+}

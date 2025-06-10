@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f7f7f7;
+        margin: 20px;
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+
+    .product {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 15px 20px;
+        margin: 10px auto;
+        width: 300px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .product span {
+        font-size: 16px;
+    }
+
+    .product span strong {
+        color: #2c3e50;
+    }
+</style>
+
+</head>
+<body>
+    <h1>Availabel Products</h1>
+    <script>
+        const products=[
+            {name:"Rose", Price:150},
+            {name:"Lilly", Price:120}
+        ]
+        products.forEach(p=>{
+            document.body.innerHTML+=`
+            <div class="product">
+                <span><strong>${p.name}</strong></span>
+                <span>${p.Price}</span>
+                </div>
+                `;
+        })
+    </script>
+</body>
+</html>

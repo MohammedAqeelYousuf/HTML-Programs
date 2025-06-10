@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Cards</title>
+   <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    .user-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .user-cards {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      transition: transform 0.2s;
+    }
+
+    .user-cards:hover {
+      transform: translateY(-5px);
+    }
+
+    .user-cards h3 {
+      margin-top: 0;
+      color: #007BFF;
+    }
+
+    .user-cards p {
+      margin: 8px 0;
+      color: #555;
+    }
+
+    .user-cards strong {
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h2>CodeNet Academy</h2>
+  <div class="user-container" id="usercards"></div>
+
+  <script>
+    fetch('user.json')
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById('usercards');
+        data.user.forEach(user => {
+          container.innerHTML += `
+            <div class="user-cards">
+              <h3>${user.fullname}</h3>
+              <p><strong>Username:</strong> ${user.username}</p>
+              <p><strong>Role:</strong> ${user.role}</p>
+              <p><strong>Location:</strong> ${user.location}</p>
+            </div>
+          `;
+        });
+      })
+      .catch(err => {
+        document.getElementById("usercards").innerHTML = "<p>Error Loading</p>";
+        console.error(err);
+      });
+  </script>
+</body>
+</html>

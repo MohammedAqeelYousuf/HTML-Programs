@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Details</title>
+</head>
+<body>
+  <h2>Top Performing Students - Green Valley High School</h2>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Id</th>
+        <th>Grade</th>
+        <th>Section</th>
+        <th>Maths</th>
+        <th>Science</th>
+        <th>English</th>
+        <th>Average</th>
+      </tr>
+    </thead>
+    <tbody id="student-table-body">
+      <!-- Dynamic Rows go here -->
+    </tbody>
+  </table>
+
+  <script>
+    fetch('students.json')
+      .then(res => res.json())
+      .then(data => {
+        const tbody = document.getElementById('student-table-body');
+
+        // Calculate average
+        const studaverage = data.students.map(student => {
+          const total = student.subjects.reduce((sum, sub) => sum + sub.marks, 0);
+          const avg = total / student.subjects.length;
+          return { ...student, average: avg.toFixed(2) };
+        });
+
+        // Sort by average values
+        studaverage.sort((a, b) => b.average - a.average);
+
+        // Generate the table
+        studaverage.forEach((stud, index) => {
+          const [math, science, english] = stud.subjects.map(sub => sub.marks);
+          const row = `
+            <tr class="${index === 0 ? 'highlight' : ''}">
+              <td>${stud.name}</td>
+              <td>${stud.id}</td>
+              <td>${stud.grade}</td>
+              <td>${stud.section}</td>
+              <td>${math}</td>
+              <td>${science}</td>
+              <td>${english}</td>
+              <td><strong>${stud.average}</strong></td>
+            </tr>
+          `;
+          tbody.innerHTML += row;
+        });
+      })
+      .catch(error => console.error("Failed to load student data:", error));
+  </script>
+</body>
+</html>

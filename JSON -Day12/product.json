@@ -1,0 +1,9 @@
+{
+    "products":[
+        {"id":1, "name": "Rose plant", "Price":50},
+        {"id":2, "name": "Tulasi plant", "Price":150},
+        {"id":3, "name": "Lilly plant", "Price":250},
+        {"id":4, "name": "Mango plant", "Price":500},
+        {"id":5, "name": "Jasmine plant", "Price":200}
+    ]
+}

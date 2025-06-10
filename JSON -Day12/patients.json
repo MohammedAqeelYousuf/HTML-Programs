@@ -1,0 +1,14 @@
+{
+  "patients": [
+    { "Patient ID": "P001", "Patient Name": "John Smith", "Age": 45, "Doctors": "Dr. Adams, Dr. Lee", "Diagnosis": "Diabetes, Hypertension", "Medicines": "Metformin, Lisinopril", "Admission Date": "2025-05-10", "Discharge Date": "2025-05-19", "Status": "Discharged" },
+    { "Patient ID": "P002", "Patient Name": "Anjali Kumar", "Age": 30, "Doctors": "Dr. Patel", "Diagnosis": "Asthma", "Medicines": "Albuterol", "Admission Date": "2025-05-11", "Discharge Date": "", "Status": "Admitted" },
+    { "Patient ID": "P003", "Patient Name": "Michael Roy", "Age": 60, "Doctors": "Dr. Chen, Dr. Singh", "Diagnosis": "Heart Disease", "Medicines": "Atorvastatin, Aspirin", "Admission Date": "2025-06-10", "Discharge Date": "2025-06-13", "Status": "Discharged" },
+    { "Patient ID": "P004", "Patient Name": "Sara Lee", "Age": 27, "Doctors": "Dr. Adams", "Diagnosis": "Migraine", "Medicines": "Sumatriptan", "Admission Date": "2025-05-22", "Discharge Date": "", "Status": "Under Treatment" },
+    { "Patient ID": "P005", "Patient Name": "David Brown", "Age": 65, "Doctors": "Dr. Lee, Dr. Patel", "Diagnosis": "Arthritis, Hypertension", "Medicines": "Ibuprofen, Lisinopril", "Admission Date": "2025-05-02", "Discharge Date": "2025-05-14", "Status": "Discharged" },
+    { "Patient ID": "P006", "Patient Name": "Priya Singh", "Age": 40, "Doctors": "Dr. Chen", "Diagnosis": "Diabetes", "Medicines": "Metformin", "Admission Date": "2025-05-20", "Discharge Date": "", "Status": "Admitted" },
+    { "Patient ID": "P007", "Patient Name": "Alan Martin", "Age": 33, "Doctors": "Dr. Adams, Dr. Patel", "Diagnosis": "Allergies", "Medicines": "Cetirizine", "Admission Date": "2025-05-10", "Discharge Date": "2025-05-22", "Status": "Discharged" },
+    { "Patient ID": "P008", "Patient Name": "Natasha Roy", "Age": 48, "Doctors": "Dr. Singh", "Diagnosis": "Hypertension", "Medicines": "Lisinopril", "Admission Date": "2025-06-10", "Discharge Date": "", "Status": "Under Treatment" },
+    { "Patient ID": "P009", "Patient Name": "Raj Kumar", "Age": 52, "Doctors": "Dr. Chen, Dr. Lee", "Diagnosis": "Heart Disease, Diabetes", "Medicines": "Atorvastatin, Metformin", "Admission Date": "2025-05-10", "Discharge Date": "2025-05-24", "Status": "Discharged" },
+    { "Patient ID": "P010", "Patient Name": "Emma Wilson", "Age": 29, "Doctors": "Dr. Patel", "Diagnosis": "Asthma", "Medicines": "Albuterol", "Admission Date": "2025-05-10", "Discharge Date": "", "Status": "Admitted" }
+  ]
+}
