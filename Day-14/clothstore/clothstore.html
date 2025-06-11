@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clothstore</title>
+</head>
+<body>
+    <h2>Clothstore Product Dashboard</h2>
+    <table border="1" cellpadding="10">
+        <thead>
+            <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Size</th>
+            <th>Price</th>
+            <th>inStock</th>
+            </tr>
+        </thead>
+        <tbody id="producttable">
+
+        </tbody>
+    </table>
+    <br><br><br><br>
+    <button onclick="logout()">Logout</button>
+    <script>
+
+        if(!localStorage.getItem("loggedInUser")){
+            alert('Please Login to view Products!!!!')
+            window.location.href='login.html'
+        }
+
+        function logout(){
+            localStorage.removeItem("loggedInUser")
+            window.location.href='login.html'
+        }
+        const url="http://localhost:3000/clothstore"
+
+        function loadproduct()
+        {
+            fetch(url)
+            .then(res=>res.json())
+            .then(data =>{
+                const table=document.getElementById("producttable")
+                table.innerHTML="";
+
+                data.forEach(d =>{
+                    const row=`
+                    <tr>
+                        <td>${d.id}</td>
+                        <td>${d.name}</td>
+                        <td>${d.category}</td>
+                        <td>${d.size}</td>
+                        <td>${d.price}</td>
+                        <td>${d.instock ? "In Stock" :"Out of Stock"}</td>
+                    </tr>`
+                    table.innerHTML +=row
+                })
+            })
+        }
+    setInterval(loadproduct,5000)
+    loadproduct()
+    </script>
+</body>
+</html>

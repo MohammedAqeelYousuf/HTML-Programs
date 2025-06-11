@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Sign Up</h2>
+    <div class="signupcontainer">
+        <form id="signupform">
+            <label for="email">Email:</label>
+            <input type="email" placeholder="Enter Email" id="email" required> <br><br><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" placeholder="Enter Password" required><br><br><br>
+            <button type="submit">Sign Up</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById("signupform").addEventListener("submit",function(e){ // Corrected "Submit" to "submit"
+            e.preventDefault();
+
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            // Check if email already exists
+            if(localStorage.getItem(email)){
+                alert('Email Already Exists. Please login!');
+                window.location.href = 'login.html'; // Assuming you have a login.html
+                return;
+            }
+
+            // Create a user object to store both email and password
+            const user = {
+                email: email,
+                password: password
+            };
+
+            // Store the user object as a JSON string
+            localStorage.setItem(email, JSON.stringify(user));
+
+            alert('Signup Successful. Please Login');
+            window.location.href = 'login.html'; // Redirect to login page
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+REST API stands for REpresentational State Transfer API
+
+
+status code--
+    200-Everythig is ok
+    201- OK (New Resource has been created)
+    204- OK (Reseouce has been successfully deleted)
+    400 - Bad Request
+    401 - unauthorized
+    403 - Forbidden
+    404 - Not Found
+    405 - Method not allowed
+    408 - Request Timeout
+    500 - Internal Server error
+
+Filtering:
+    Use unique query parameters for all fields.
+
+Sorting:
+    sort=   (Use this in the query parameter to sort)
+
+paging:
+    limiting is done
+            offset --> starting point
+            limit  --> limiting to particular count      limit=5 (5 records)
+

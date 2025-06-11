@@ -1,0 +1,85 @@
+{
+  "products": [
+    {
+      "id": "a0cd",
+      "productid": 1,
+      "name": "Smartphone x100",
+      "category": "Electronics",
+      "price": 599.99,
+      "instock": true
+    },
+    {
+      "id": "f3ea",
+      "productid": 2,
+      "name": "Wireless Headphones",
+      "category": "Electronics",
+      "price": 199.99,
+      "instock": false
+    },
+    {
+      "id": "6a1f",
+      "productid": 3,
+      "name": "Monitor",
+      "category": "Electronics",
+      "price": 699.99,
+      "instock": true
+    },
+    {
+      "id": "03e8",
+      "productid": 4,
+      "name": "Laptop",
+      "category": "Electronics",
+      "price": 999.99,
+      "instock": true
+    },
+    {
+      "id": "b59c",
+      "productid": 5,
+      "name": "Smart TV",
+      "category": "Electronics",
+      "price": 899.99,
+      "instock": true
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "userid": 1,
+      "username": "abcdefg",
+      "email": "abcdefg@gmail.com",
+      "role": "user"
+    },
+    {
+      "id": "2",
+      "userid": 2,
+      "username": "bob123",
+      "email": "bob@gmail.com",
+      "role": "user"
+    },
+    {
+      "id": "3d08",
+      "userid": 3,
+      "username": "charlie123",
+      "email": "charlie@gmail.com",
+      "role": "admin"
+    }
+  ],
+  "orders": [
+    {
+      "id": "911c",
+      "orderid": 1,
+      "userid": 1,
+      "productid": 2,
+      "quantity": 2,
+      "status": "Confirmed"
+    },
+    {
+      "id": "c0cb",
+      "orderid": 2,
+      "userid": 2,
+      "productid": 3,
+      "quantity": 4,
+      "status": "Pending"
+    }
+  ]
+}
