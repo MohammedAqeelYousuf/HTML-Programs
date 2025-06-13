@@ -1,26 +1,24 @@
 {
   "clothstore": [
     {
-      "id": "1",
-      "name": "Women's Kurti",
-      "category": "Women",
+      "name": "Men Shirt",
+      "category": "Men",
       "size": "M",
-      "color": "Red",
       "price": 1199,
-      "instock": true
+      "instock": true,
+      "id": "1"
     },
     {
-      "id": "2",
-      "name": "Kid's T-Shirt",
+      "name": "Kid T-Shirt",
       "category": "Kids",
       "size": "S",
-      "color": "Blue",
-      "price": 490,
-      "instock": false
+      "price": 890,
+      "instock": false,
+      "id": "2"
     },
     {
       "id": "3",
-      "name": "Women's Jeans",
+      "name": "Women Jeans",
       "category": "Women",
       "size": "S",
       "color": "Black",
@@ -28,40 +26,44 @@
       "instock": false
     },
     {
-      "id": "4",
-      "name": "Men's Jeans",
+      "name": "Men Jeans",
       "category": "Men",
       "size": "M",
-      "color": "Navy BLue",
       "price": 850,
-      "instock": false
+      "instock": true,
+      "id": "4"
     },
     {
-      "id": "5",
-      "name": "Men's T-Shirt",
-      "category": "Men",
+      "name": "Women T-Shirt",
+      "category": "Women",
       "size": "L",
-      "color": "Black",
-      "price": 1000,
-      "instock": true
+      "price": 666,
+      "instock": true,
+      "id": "5"
     },
     {
-      "id": "6",
-      "name": "Men's Shirt",
+      "name": "Men Shirt",
       "category": "Men",
       "size": "M",
-      "color": "Green",
-      "price": 399,
-      "instock": false
+      "price": 888,
+      "instock": true,
+      "id": "6"
     },
     {
       "id": "7",
-      "name": "Women's Shirt",
-      "category": "Women",
+      "name": "Men Kurta",
+      "category": "Men",
       "size": "L",
-      "color": "White",
-      "price": 699,
+      "price": 999,
       "instock": true
+    },
+    {
+      "id": "8",
+      "name": "Women Jeans",
+      "category": "Women",
+      "size": "S",
+      "price": 409,
+      "instock": false
     }
   ]
 }

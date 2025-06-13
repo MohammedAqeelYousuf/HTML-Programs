@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Product</title>
+</head>
+<body>
+    <h2>Add New Product</h2>
+
+    <div class="form-container">
+        <form id="addProductForm">
+            <div class="form-group">
+                <label for="productId">Product ID (e.g., "1", "2"):</label>
+                <input type="text" id="productId" name="id" required>
+            </div> <br>
+            <div class="form-group">
+                <label for="productName">Product Name:</label>
+                <input type="text" id="productName" name="name" required>
+            </div><br>
+            <div class="form-group">
+                <label for="productCategory">Category:</label>
+                <input type="text" id="productCategory" name="category" required>
+            </div><br>
+            <div class="form-group">
+                <label for="productSize">Size:</label>
+                <input type="text" id="productSize" name="size" required>
+            </div><br>
+            <div class="form-group">
+                <label for="productPrice">Price:</label>
+                <input type="number" id="productPrice" name="price" step="0.01" min="0" required>
+            </div><br>
+            <div class="form-group">
+                <input type="checkbox" id="productInStock" name="instock" checked>
+                <label for="productInStock">In Stock</label>
+            </div><br>
+            <div class="button-group">
+                <button type="submit" class="add-btn">Add Product</button>
+                <button type="button" class="back-btn" onclick="window.location.href='admin_dashboard.html'">Back to Dashboard</button>
+            </div><br>
+        </form>
+        <div id="message" class="message"></div>
+    </div>
+
+    <script>
+        const form = document.getElementById('addProductForm');
+        const messageDiv = document.getElementById('message');
+        const url = "http://localhost:3000/clothstore"; 
+
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            messageDiv.style.display = 'none'; // Hide previous messages
+
+            const newProduct = {
+                id: document.getElementById('productId').value,
+                name: document.getElementById('productName').value,
+                category: document.getElementById('productCategory').value,
+                size: document.getElementById('productSize').value,
+                price: parseFloat(document.getElementById('productPrice').value), // Convert price to number
+                instock: document.getElementById('productInStock').checked // Convert checkbox to boolean
+            };
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(newProduct)
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text(); // Get error response body
+                    console.error('Error adding product:', response.status, errorText);
+                    // Check for common json-server error: id already exists
+                    if (response.status === 500 && errorText.includes("Duplicate id")) {
+                        displayMessage('Error: A product with this ID already exists. Please use a unique ID.', 'error');
+                    } else {
+                        throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
+                    }
+                    return; 
+                }
+
+                const addedProduct = await response.json();
+                console.log('Product added successfully:', addedProduct);
+                displayMessage(`Product "${addedProduct.name}" (ID: ${addedProduct.id}) added successfully! You can add another.`, 'success');
+                
+                // Clear all form fields except for inStock checkbox (which defaults to checked)
+                form.reset(); 
+                document.getElementById('productInStock').checked = true; // Ensure checkbox is checked for next entry
+
+            } catch (error) {
+                console.error("Error adding product:", error);
+                displayMessage(`Failed to add product: ${error.message}. Please check console for details.`, 'error');
+            }
+        });
+
+        function displayMessage(msg, type) {
+            messageDiv.textContent = msg;
+            messageDiv.className = `message ${type}`; // Apply success or error class
+            messageDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

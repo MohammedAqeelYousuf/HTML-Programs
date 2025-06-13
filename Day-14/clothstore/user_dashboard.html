@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+</head>
+<body>
+    <h2 id="welcomeHeading">Welcome</h2>
+
+    <div class="action-buttons-container">
+        <button onclick="showProducts()" class="checkout-summary-btn">View Products</button>
+        <button onclick="viewCartContents()" class="view-cart-btn">View Cart</button>
+        <button onclick="logout()" class="logout-btn">Logout</button>
+    </div>
+
+    <div id="productsSection" class="section" style="display: block;">
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Size</th>
+                    <th>Price</th>
+                    <th>In Stock</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="productTableBody">
+            </tbody>
+        </table>
+    </div>
+
+    <div id="cartSection" class="section">
+        <h3>Your Shopping Cart</h3>
+        <div id="emptyCartMessage" class="empty-message" style="display: none;">
+            Your cart is empty.
+        </div>
+        <div id="cartContent">
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Subtotal</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+                <tbody id="cartItemsTableBody">
+                </tbody>
+            </table>
+            <button onclick="showProducts()" class="back-btn">Continue Shopping</button>
+            <button onclick="clearCart()" class="clear-cart-btn">Clear Cart</button>
+            <button onclick="showCheckoutSummary()" class="place-order-btn">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <div id="checkoutSection" class="section">
+        <h3>Checkout Summary</h3>
+        <div id="emptyCheckoutMessage" class="empty-message" style="display: none;">
+            Your cart is empty. Please add items to proceed to checkout.
+        </div>
+        <div id="checkoutSummaryContent">
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Line Total</th>
+                    </tr>
+                </thead>
+                <tbody id="checkoutSummaryTableBody">
+                </tbody>
+                <tfoot>
+                    <tr class="total-row">
+                        <td colspan="3" style="text-align: right;">Grand Total:</td>
+                        <td id="checkoutGrandTotal"></td>
+                    </tr>
+                </tfoot>
+            </table>
+            <button onclick="viewCartContents()" class="back-btn">Back to Cart</button>
+            <button onclick="placeOrder()" class="place-order-btn">Place Order</button>
+        </div>
+    </div>
+
+    <script>
+        if (!localStorage.getItem("loggedInUser")) {
+            alert('Please Login to view Products!');
+            window.location.href = 'login.html';
+        }
+
+        const loggedInUserEmail = localStorage.getItem("loggedInUser");
+        if (loggedInUserEmail) {
+            const storedUserJSON = localStorage.getItem(loggedInUserEmail);
+            if (storedUserJSON) {
+                const storedUser = JSON.parse(storedUserJSON);
+                document.getElementById('welcomeHeading').textContent = `Welcome, ${storedUser.username}!`;
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem("loggedInUser");
+            localStorage.removeItem("shoppingCart");
+            window.location.href = 'logout.html';
+        }
+
+        const url = "http://localhost:3000/clothstore";
+        let productsData = [];
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
+        function showProducts() {
+            showSection('productsSection');
+            loadProducts();
+        }
+
+        function loadProducts() {
+            fetch(url)
+                .then(res => {
+                    if (!res.ok) {
+                        console.error('Network response was not ok:', res.status, res.statusText);
+                        throw new Error(`HTTP error! status: ${res.status}`);
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    productsData = data;
+                    const tableBody = document.getElementById("productTableBody");
+                    tableBody.innerHTML = "";
+
+                    data.forEach(d => {
+                        const isInStock = d.instock;
+                        const buttonDisabled = !isInStock ? 'disabled' : '';
+                        const buttonText = isInStock ? 'Add to Cart' : 'Out of Stock';
+
+                        const row = `
+                            <tr>
+                                <td>${d.id}</td>
+                                <td>${d.name}</td>
+                                <td>${d.category}</td>
+                                <td>${d.size}</td>
+                                <td>${d.price}</td>
+                                <td>${isInStock ? "In Stock" : "Out of Stock"}</td>
+                                <td>
+                                    <button class="add-to-cart-btn" ${buttonDisabled} data-product-id="${d.id}">
+                                        ${buttonText}
+                                    </button>
+                                </td>
+                            </tr>`;
+                        tableBody.innerHTML += row;
+                    });
+
+                    document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+                        button.addEventListener('click', function() {
+                            const productId = this.dataset.productId;
+                            addToCart(productId);
+                        });
+                    });
+                })
+                .catch(error => {
+                    console.error("Error fetching or processing products:", error);
+                    alert("Failed to load products. Please try again later. Check console for details.");
+                });
+        }
+
+        function getCart() {
+            const cartJSON = localStorage.getItem('shoppingCart');
+            return cartJSON ? JSON.parse(cartJSON) : [];
+        }
+
+        function saveCart(cart) {
+            localStorage.setItem('shoppingCart', JSON.stringify(cart));
+        }
+
+        function addToCart(productId) {
+            let cart = getCart();
+            const productToAdd = productsData.find(p => p.id === productId); 
+
+            if (!productToAdd) {
+                console.error("Product with ID " + productId + " not found in productsData!");
+                alert('Product not found!');
+                return;
+            }
+            if (!productToAdd.instock) {
+                alert('This product is out of stock!');
+                return;
+            }
+
+            const existingItem = cart.find(item => item.id === productId);
+
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({
+                    id: productToAdd.id,
+                    name: productToAdd.name,
+                    price: productToAdd.price,
+                    size: productToAdd.size,
+                    quantity: 1
+                });
+            }
+
+            saveCart(cart);
+            alert(`${productToAdd.name} added to cart! Current cart items: ${cart.length}`);
+        }
+
+        function viewCartContents() {
+            showSection('cartSection');
+            const cart = getCart();
+            const tableBody = document.getElementById('cartItemsTableBody');
+            const emptyCartMessageDiv = document.getElementById('emptyCartMessage');
+            const cartContentDiv = document.getElementById('cartContent');
+
+            let total = 0;
+            tableBody.innerHTML = '';
+
+            if (cart.length === 0) {
+                emptyCartMessageDiv.style.display = 'block';
+                cartContentDiv.style.display = 'none';
+            } else {
+                emptyCartMessageDiv.style.display = 'none';
+                cartContentDiv.style.display = 'block';
+
+                cart.forEach(item => {
+                    const subtotal = item.price * item.quantity;
+                    total += subtotal;
+
+                    const row = `
+                        <tr>
+                            <td>${item.name} (${item.size})</td>
+                            <td>$${item.price.toFixed(2)}</td>
+                            <td>${item.quantity}</td>
+                            <td><span style="font-weight: bold;">$${subtotal.toFixed(2)}</span></td>
+                            <td><button class="remove-item-btn" onclick="removeItem('${item.id}')">Remove</button></td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                });
+            }
+        }
+
+        function removeItem(productId) {
+            let cart = getCart();
+            cart = cart.filter(item => item.id !== productId); 
+            saveCart(cart);
+            viewCartContents();
+        }
+
+        function clearCart() {
+            if (confirm('Are you sure you want to clear your cart?')) {
+                localStorage.removeItem('shoppingCart');
+                viewCartContents();
+            }
+        }
+
+        function showCheckoutSummary() {
+            showSection('checkoutSection');
+            const cart = getCart();
+            const tableBody = document.getElementById('checkoutSummaryTableBody');
+            const grandTotalElement = document.getElementById('checkoutGrandTotal');
+            const emptyCheckoutMessageDiv = document.getElementById('emptyCheckoutMessage');
+            const checkoutSummaryContentDiv = document.getElementById('checkoutSummaryContent');
+
+            let grandTotal = 0;
+            tableBody.innerHTML = '';
+
+            if (cart.length === 0) {
+                emptyCheckoutMessageDiv.style.display = 'block';
+                checkoutSummaryContentDiv.style.display = 'none';
+            } else {
+                emptyCheckoutMessageDiv.style.display = 'none';
+                checkoutSummaryContentDiv.style.display = 'block';
+
+                cart.forEach(item => {
+                    const lineTotal = item.price * item.quantity;
+                    grandTotal += lineTotal;
+
+                    const row = `
+                        <tr>
+                            <td>${item.name} (${item.size})</td>
+                            <td>$${item.price.toFixed(2)}</td>
+                            <td>${item.quantity}</td>
+                            <td><span style="font-weight: bold;">$${lineTotal.toFixed(2)}</span></td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                });
+                grandTotalElement.textContent = `$${grandTotal.toFixed(2)}`;
+            }
+        }
+
+        function placeOrder() {
+            const cart = getCart();
+            if (cart.length === 0) {
+                alert('Your cart is empty. Cannot place an empty order.');
+                return;
+            }
+            alert('Order Placed Successfully! ');
+            localStorage.removeItem('shoppingCart');
+            showProducts();
+        }
+
+        showProducts();
+        setInterval(loadProducts, 5000);
+    </script>
+</body>
+</html>

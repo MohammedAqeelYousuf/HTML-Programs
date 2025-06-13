@@ -6,41 +6,49 @@
     <title>Document</title>
 </head>
 <body>
-    <h2>Sign Up</h2>
     <div class="signupcontainer">
+        <h2>Sign Up</h2>
         <form id="signupform">
+            <label for="username">Username:</label>
+            <input type="text" placeholder="Enter Username" id="username" required> <br><br>
             <label for="email">Email:</label>
-            <input type="email" placeholder="Enter Email" id="email" required> <br><br><br>
+            <input type="email" placeholder="Enter Email" id="email" required> <br><br>
             <label for="password">Password:</label>
-            <input type="password" id="password" placeholder="Enter Password" required><br><br><br>
+            <input type="password" id="password" placeholder="Enter Password" required><br><br>
+            <label for="role">Role:</label>
+            <select id="role">
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+            </select> <br><br>
             <button type="submit">Sign Up</button>
         </form>
     </div>
     <script>
-        document.getElementById("signupform").addEventListener("submit",function(e){ // Corrected "Submit" to "submit"
+        document.getElementById("signupform").addEventListener("submit", function(e) {
             e.preventDefault();
 
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
+            const role = document.getElementById("role").value;
+            const username = document.getElementById("username").value;
 
-            // Check if email already exists
-            if(localStorage.getItem(email)){
+            if (localStorage.getItem(email)) {
                 alert('Email Already Exists. Please login!');
-                window.location.href = 'login.html'; // Assuming you have a login.html
+                window.location.href = 'login.html';
                 return;
             }
 
-            // Create a user object to store both email and password
             const user = {
+                username: username,
                 email: email,
-                password: password
+                password: password,
+                role: role
             };
 
-            // Store the user object as a JSON string
             localStorage.setItem(email, JSON.stringify(user));
 
             alert('Signup Successful. Please Login');
-            window.location.href = 'login.html'; // Redirect to login page
+            window.location.href = 'login.html';
         });
     </script>
 </body>

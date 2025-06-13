@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logged Out</title>
+</head>
+<body>
+    <div class="logout-container">
+        <h2 id="thankYouMessage">Thank You!</h2>
+        <p>You have been successfully logged out.</p>
+        <p class="redirect-message">
+            Redirecting to the homepage in <span id="countdown">5</span> seconds...
+        </p>
+    </div>
+
+    <script>
+        let userName = "User"; 
+        
+        const loggedInUserEmail = localStorage.getItem("loggedInUser");
+        
+        if (loggedInUserEmail) {
+            const storedUserJSON = localStorage.getItem(loggedInUserEmail);
+            
+            if (storedUserJSON) {
+                const storedUser = JSON.parse(storedUserJSON);
+                if (storedUser.username) {
+                    userName = storedUser.username;
+                }
+            }
+        }
+        
+        document.getElementById('thankYouMessage').innerHTML = `Thank You, <span id="userName">${userName}</span>!`;
+
+        localStorage.removeItem("loggedInUser");
+        localStorage.removeItem("shoppingCart");
+        
+        let count = 5;
+        const countdownElement = document.getElementById('countdown');
+
+        function updateCountdown() {
+            countdownElement.textContent = count;
+            count--;
+            if (count < 0) {
+                window.location.href = 'index.html';
+            } else {
+                setTimeout(updateCountdown, 1000);
+            }
+        }
+
+        updateCountdown();
+    </script>
+</body>
+</html>

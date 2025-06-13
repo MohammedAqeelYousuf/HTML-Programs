@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edit Product</title>
+</head>
+<body>
+  <h2>Edit Product</h2>
+  <form id="editform">
+    <label>Name</label>
+    <input type="text" id="name" required><br><br>
+
+    <label>Category</label>
+    <input type="text" id="category" required><br><br>
+
+    <label>Size</label>
+    <input type="text" id="size" required><br><br>
+
+    <label>Price</label>
+    <input type="text" id="price" required><br><br>
+
+    <label>In Stock</label>
+    <input type="checkbox" id="instock"><br><br>
+
+    <button type="submit">Update Product</button>
+    <button type="button" onclick="window.location.href='clothstore.html'">Cancel</button>
+  </form>
+
+  <!-- ✅ JavaScript placed at the very end of body to ensure DOM is loaded -->
+  <script>
+    if (!localStorage.getItem("loggedInUser")) {
+        alert('Please Login to view Products!');
+        window.location.href = 'login.html';
+    }
+
+    const loggedInUserEmail = localStorage.getItem("loggedInUser");
+    if (loggedInUserEmail) {
+        const storedUserJSON = localStorage.getItem(loggedInUserEmail);
+        if (storedUserJSON) {
+            const storedUser = JSON.parse(storedUserJSON);
+            document.getElementById('welcomeHeading').textContent = `Welcome, ${storedUser.username}!`;
+        }
+    }
+
+    function logout() {
+        localStorage.removeItem("loggedInUser");
+        localStorage.removeItem("shoppingCart");
+        window.location.href = 'login.html';
+    }
+
+    const url = "http://localhost:3000/clothstore";
+    let productsData = [];
+
+    function loadProducts() {
+        fetch(url)
+            .then(res => {
+                if (!res.ok) {
+                    console.error('Network response was not ok:', res.status, res.statusText);
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+                return res.json();
+            })
+            .then(data => {
+                console.log("Fetched product data:", data); // LOG 1: Check what data is fetched
+                productsData = data;
+                console.log("productsData after assignment:", productsData); // LOG 2: Check productsData after assignment
+
+                const tableBody = document.getElementById("producttable");
+                tableBody.innerHTML = "";
+
+                data.forEach(d => {
+                    const isInStock = d.instock;
+                    const buttonDisabled = !isInStock ? 'disabled' : '';
+                    const buttonText = isInStock ? 'Add to Cart' : 'Out of Stock';
+
+                    const row = `
+                        <tr>
+                            <td>${d.id}</td>
+                            <td>${d.name}</td>
+                            <td>${d.category}</td>
+                            <td>${d.size}</td>
+                            <td>${d.price}</td>
+                            <td>${isInStock ? "In Stock" : "Out of Stock"}</td>
+                            <td>
+                                <button class="add-to-cart-btn" ${buttonDisabled} data-product-id="${d.id}">
+                                    ${buttonText}
+                                </button>
+                            </td>
+                        </tr>`;
+                    tableBody.innerHTML += row;
+                });
+
+                document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const productId = parseInt(this.dataset.productId);
+                        console.log("Clicked button product ID:", productId); // LOG 3: Check the ID from the button
+                        addToCart(productId);
+                    });
+                });
+            })
+            .catch(error => {
+                console.error("Error fetching or processing products:", error);
+                alert("Failed to load products. Please try again later. Check console for details.");
+            });
+    }
+
+    function getCart() {
+        const cartJSON = localStorage.getItem('shoppingCart');
+        return cartJSON ? JSON.parse(cartJSON) : [];
+    }
+
+    function saveCart(cart) {
+        localStorage.setItem('shoppingCart', JSON.stringify(cart));
+    }
+
+    function addToCart(productId) {
+        console.log("Entering addToCart for productId:", productId); // LOG 4: Confirm ID in addToCart
+        console.log("productsData array in addToCart:", productsData); // LOG 5: Check productsData here
+
+        let cart = getCart();
+        const productToAdd = productsData.find(p => p.id === productId);
+
+        if (!productToAdd) {
+            console.error("Product with ID " + productId + " not found in productsData!"); // LOG 6: Specific error if not found
+            alert('Product not found!');
+            return;
+        }
+        if (!productToAdd.instock) {
+            alert('This product is out of stock!');
+            return;
+        }
+
+        const existingItem = cart.find(item => item.id === productId);
+
+        if (existingItem) {
+            existingItem.quantity++;
+        } else {
+            cart.push({
+                id: productToAdd.id,
+                name: productToAdd.name,
+                price: productToAdd.price,
+                quantity: 1
+            });
+        }
+
+        saveCart(cart);
+        alert(`${productToAdd.name} added to cart! Current cart items: ${cart.length}`);
+    }
+
+    function viewCartContents() {
+        const cart = getCart();
+        if (cart.length === 0) {
+            alert("Your cart is empty!");
+            return;
+        }
+
+        let cartSummary = "Your Cart:\n\n";
+        let total = 0;
+        cart.forEach(item => {
+            cartSummary += `${item.name} (x${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}\n`;
+            total += item.price * item.quantity;
+        });
+        cartSummary += `\nTotal: $${total.toFixed(2)}`;
+        alert(cartSummary);
+    }
+
+    loadProducts();
+    setInterval(loadProducts, 5000);
+</script>
+</body>
+</html>
