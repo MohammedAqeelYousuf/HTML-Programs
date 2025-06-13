@@ -1,0 +1,16 @@
+body{
+    font-family: sans-serif;
+    margin: 20px;
+}
+nav{
+    margin-bottom: 20px;
+}
+nav a{
+    margin-left: 16px;
+    text-decoration: none;
+    color: aqua;
+}
+
+nav a:hover{
+    text-decoration: underline;
+}

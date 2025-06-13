@@ -7,15 +7,14 @@
     <link rel="manifest" href="manifest.json">
 </head>
 <body>
-    <h1>Hello PWA</h1>
-    <p>This app works offline!!!!!</p>
-    <img src="icon.png">
+    <h1>Hello PWA!</h1>
+    <p>This app works offline !!</p>
 
     <script>
-        if('serviceWorkier' in navigator){
+        if('serviceWorker' in navigator){
             navigator.serviceWorker.register('service-worker.js')
-            .then(()=>console.log("Service Worker registered"))
-            .catch(err => console.error('SW registration failed.',err))
+            .then(()=>console.log('Service Worker registered'))
+            .catch(err => console.error('SW registration failed', err))
         }
     </script>
 </body>
